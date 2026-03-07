@@ -34,22 +34,28 @@ Family Gesneriaceae (excluding Saintpaulia)</h2>
                         <p>Derivation: (Select all that apply)</p>
                         <div class="form-check ">
                           <input class="form-check-input" type="checkbox" id="hybrid" value="hybrid">
-                          <label class="form-check-label" for="inlineCheckbox1">Hybrid</label>
+                          <label class="form-check-label" for="hybrid">Hybrid</label>
                         </div>
                         <div class="form-check ">
                           <input class="form-check-input" type="checkbox" id="seedling" value="seedling">
-                          <label class="form-check-label" for="inlineCheckbox2">Chance Seedling Selection</label>
+                          <label class="form-check-label" for="seedling">Chance Seedling Selection</label>
                         </div>
                         <div class="form-check ">
                           <input class="form-check-input" type="checkbox" id="mutation" value="mutation" >
-                          <label class="form-check-label" for="inlineCheckbox3">Seed or Vegetative Mutation</label>
+                          <label class="form-check-label" for="mutation">Seed or Vegetative Mutation</label>
                         </div>
                     </div>
                      <div class="col-md-6">
-                        <label for="message" class="form-label">Originators:</label>
-                        <textarea class="form-control" id="message" name="message" rows="4" placeholder="List all Originators"></textarea>
+                        <label for="originators" class="form-label">Originators:</label>
+                        <textarea class="form-control" id="originators" name="originators" rows="4" placeholder="List all Originators"></textarea>
                       </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="derivedPlant" class="form-label">Name of plant from which the mutation is derived:</label>
+                        <input type="text" class="form-control" id="derivedPlant" placeholder="Derived Plant name">
+                    </div>
+                    </div>
                 <div class="row mb-3">
                     <div class="col-md-4">
                      <label for="city" class="form-label">City</label>
@@ -79,8 +85,8 @@ Family Gesneriaceae (excluding Saintpaulia)</h2>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-12">
-                        <p><strong>This plant is:</strong></p>
+                    <p><strong>This plant is:</strong></p>
+                    <div class="col-md-12 ">
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="checkbox" id="sterile" value="sterile">
                           <label class="form-check-label" for="sterile">Sterile</label>
@@ -210,8 +216,8 @@ Family Gesneriaceae (excluding Saintpaulia)</h2>
                 </div>
                 <div class="row mb-3">
                         <div class="col-12">
-                            <label for="growth_habit" class="form-label">Plant details and growth habit</label>
-                            <textarea class="form-control" id="growth_habit" name="growth_habit" rows="4" placeholder="Plant details and growth habit:"></textarea>
+                            <label for="growth_habit" class="form-label">Plant details and growth habit:</label>
+                            <textarea class="form-control" id="growth_habit" name="growth_habit" rows="4" placeholder="Plant details and growth habit"></textarea>
                         </div>
                     </div>
                 <div class="row mb-3">
@@ -524,26 +530,6 @@ now in cultivation</label>
                             <textarea class="form-control" id="differ" name="differ" rows="4" placeholder="Describe in detail how this cultivar differs..."></textarea>
                         </div>
                     </div>
-                 <div class="row mb-3">
-                    <div class="col-12">
-                        <p class="mb-2"><strong>Files Attached:</strong></p>
-                    </div>
-                </div>
-                <div class="row mb-3 text-center">
-                    <div class="col-2">
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name ="files" id="photographs" value="photographs">
-                          <label class="form-check-label" for="photographs">Photos</label>
-                        </div>
-                        </div>
-                     <div class="col-2">
-                        <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name ="files" id="drawings" value="drawings">
-                          <label class="form-check-label" for="drawings">Drawings</label>
-                        </div>
-                    </div>
-                    <div class="col-8"></div>
-                </div>
                 <div class="row mb-3">
                     <div class="col-12">
                         <p class="mb-2"><strong>Registration Information:</strong></p>
