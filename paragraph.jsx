@@ -15,7 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
             mutation: document.getElementById('mutation').checked,
             
             // Originators
-            originators: document.getElementById('message').value,
+            originators: document.getElementById('originators').value,
+            
+            // Derived plant (for mutations)
+            derivedPlant: document.getElementById('derivedPlant').value,
             
             // Location
             city: document.getElementById('city').value,
@@ -33,8 +36,14 @@ document.addEventListener('DOMContentLoaded', function() {
             trueSeed: document.getElementById('trueSeed').checked,
             vegetatively: document.getElementById('vegatatively').checked,
             
+            // Shape (radio)
+            shape: getRadioValue('shape'),
+            
             // Growth habit (radio)
             growth: getRadioValue('growth'),
+            
+            // Growth habit details
+            growth_habit: document.getElementById('growth_habit').value,
             
             // Leaf properties
             leafColor: document.getElementById('leafColor').value,
@@ -46,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
             tip: getRadioValue('tip'),
             base: getRadioValue('base'),
             margin: getRadioValue('margin'),
-            indument: getRadioValue('indument'),
             
             // Calyx properties
             calyxColor: document.getElementById('calyxColor').value,
@@ -63,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Additional info
             differ: document.getElementById('differ').value,
-            files: getRadioValue('files'),
             email: document.getElementById('email').value,
             cultivar: document.getElementById('cultivar').value,
             awards: document.getElementById('awards').value,
@@ -83,128 +90,107 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function generateParagraph(data) {
+        // Build exactly as specified in the format
         let text = '';
-
-        // Opening line - Plant Name, Year, File Number
-        const openingParts = [];
-        if (data.plantName) openingParts.push(data.plantName);
-        if (data.yearSubmittion) openingParts.push(data.yearSubmittion);
-        if (data.fileNumber) openingParts.push(`File No. ${data.fileNumber}`);
         
-        if (openingParts.length > 0) {
-            text += openingParts.join(', ') + '. ';
-        }
-
-        // Derivation
-        if (data.hybrid || data.seedling || data.mutation) {
-            const derivation = [];
-            if (data.hybrid) derivation.push('hybrid');
-            if (data.seedling) derivation.push('chance seedling selection');
-            if (data.mutation) derivation.push('seed or vegetative mutation');
-            text += 'Derivation: ' + derivation.join(', ') + '. ';
-        }
-
-        // Originators and Location
-        if (data.originators) {
-            text += 'Hybridized by ' + data.originators;
-            const locationParts = [];
-            if (data.city) locationParts.push(data.city);
-            if (data.state) locationParts.push(data.state);
-            if (data.country) locationParts.push(data.country);
-            if (locationParts.length > 0) {
-                text += ', ' + locationParts.join(', ');
-            }
-            text += '. ';
-        }
-
-        // Dates
-        if (data.cross) {
-            text += 'Cross was made on ' + formatDate(data.cross) + '. ';
-        }
-        if (data.planted) {
-            text += 'Seeds were planted on ' + formatDate(data.planted) + '. ';
-        }
-        if (data.flowering) {
-            text += 'First flowering was on ' + formatDate(data.flowering) + '. ';
-        }
-
-        // Reproduction type
-        if (data.sterile || data.fertile || data.trueSeed || data.vegetatively) {
-            const reproductionType = [];
-            if (data.sterile) reproductionType.push('sterile');
-            if (data.fertile) reproductionType.push('fertile');
-            if (data.trueSeed) reproductionType.push('true from seed');
-            if (data.vegetatively) reproductionType.push('reproducible only vegetatively');
-            text += 'This plant is ' + reproductionType.join(', ') + '. ';
-        }
-
-        // Growth habit
-        if (data.growth) {
-            text += 'Growth habit: ' + formatWord(data.growth) + '. ';
-        }
-
-        // Leaves
-        const leafParts = [];
-        if (data.leafColor) leafParts.push(data.leafColor + ' in color');
-        if (data.leafLength) leafParts.push(data.leafLength + ' long');
-        if (data.leafWidth) leafParts.push(data.leafWidth + ' wide');
-        if (data.petioleLength) leafParts.push(data.petioleLength + ' petiole');
+        // plantName, yearSubmittion, fileNumber
+        if (data.plantName) text += data.plantName + ", ";
+        if (data.yearSubmittion) text += data.yearSubmittion + ", ";
+        if (data.fileNumber) text += data.fileNumber + ", ";
         
-        const leafCharacteristics = [];
-        if (data.tip) leafCharacteristics.push(data.tip + ' tip');
-        if (data.base) leafCharacteristics.push(data.base + ' base');
-        if (data.margin) leafCharacteristics.push(data.margin + ' margin');
-        if (data.indument) leafCharacteristics.push(data.indument);
-
-        if (leafParts.length > 0 || leafCharacteristics.length > 0) {
-            text += 'Leaves: ' + leafParts.join(', ');
-            if (leafCharacteristics.length > 0) {
-                if (leafParts.length > 0) text += '; ';
-                text += leafCharacteristics.join(', ');
-            }
-            text += '. ';
+        // Derivation (Hybrid, Seedling, Mutation)
+        const derivationParts = [];
+        if (data.hybrid) derivationParts.push('hybrid');
+        if (data.seedling) derivationParts.push('chance seedling selection');
+        if (data.mutation) derivationParts.push('seed or vegetative mutation');
+        if (derivationParts.length > 0) {
+            text += derivationParts.join(', ') + ", ";
         }
-
-        // Calyx
-        const calyxParts = [];
-        if (data.calyx) calyxParts.push(formatWord(data.calyx));
-        if (data.calyxColor) calyxParts.push(data.calyxColor);
-        if (data.calyxLength) calyxParts.push(data.calyxLength + ' long');
-        if (data.pedicelLength) calyxParts.push(data.pedicelLength + ' pedicel');
-        if (data.flowerNumber) calyxParts.push(data.flowerNumber + ' flowers per axil');
-
-        if (calyxParts.length > 0) {
-            text += 'Calyx: ' + calyxParts.join(', ') + '. ';
+        
+        // by originators
+        if (data.originators) text += "by " + data.originators + "; ";
+        
+        // derived plant (if mutation)
+        if (data.derivedPlant) text += "derived from " + data.derivedPlant + ", ";
+        
+        // city, state, country
+        if (data.city) text += data.city + ", ";
+        if (data.state) text += data.state + ", ";
+        if (data.country) text += data.country + ", ";
+        
+        // mutationPlant (reproductive type)
+        const reproductionType = [];
+        if (data.sterile) reproductionType.push('sterile');
+        if (data.fertile) reproductionType.push('fertile');
+        if (data.trueSeed) reproductionType.push('true from seed');
+        if (data.vegetatively) reproductionType.push('reproducible only vegetatively');
+        if (reproductionType.length > 0) {
+            text += reproductionType.join(', ') + ", ";
         }
-
+        
+        // cross made on
+        if (data.cross) text += "cross made on " + formatDate(data.cross) + "; ";
+        
+        // seeds planted on
+        if (data.planted) text += "seeds planted on " + formatDate(data.planted) + "; ";
+        
+        // first flowered on
+        if (data.flowering) text += "first flowered on " + formatDate(data.flowering) + "; ";
+        
+        // derivationSeed (already captured in reproductionType above)
+        
+        // growth type and growth habit
+        if (data.growth) text += data.growth + ", ";
+        if (data.growth_habit) text += data.growth_habit + ", ";
+        
+        // Shape
+        if (data.shape) text += data.shape + ", ";
+        
+        // leafColor
+        if (data.leafColor) text += data.leafColor + ", ";
+        
+        // margin
+        if (data.margin) text += "margin " + data.margin + "; ";
+        
+        // leafLength, leafWidth, petiole
+        if (data.leafLength) text += data.leafLength + ", ";
+        if (data.leafWidth) text += data.leafWidth + ", ";
+        if (data.petioleLength) text += data.petioleLength + " petiole, ";
+        
+        // tipType with tipType (note: your original had this duplicated)
+        if (data.tip) text += data.tip + " with " + data.tip + ", ";
+        
+        // baseType
+        if (data.base) text += data.base + ", ";
+        
+        // calyx type
+        if (data.calyx) text += "calyx " + data.calyx + ", ";
+        
+        // calyxColor
+        if (data.calyxColor) text += data.calyxColor + ", ";
+        
+        // length of calyx
+        if (data.calyxLength) text += "length " + data.calyxLength + ", ";
+        
+        // length of pedicel
+        if (data.pedicelLength) text += "length of pedicel " + data.pedicelLength + ", ";
+        
+        // number of flowers on the axil
+        if (data.flowerNumber) text += "number of flowers on the axil " + data.flowerNumber + ", ";
+        
         // Corolla
-        const corollaParts = [];
-        if (data.corolla) corollaParts.push(formatWord(data.corolla));
-        if (data.corollaColor) corollaParts.push(data.corollaColor);
-        if (data.corollaLength) corollaParts.push(data.corollaLength + ' long');
-        if (data.corollaDiameter) corollaParts.push(data.corollaDiameter + ' diameter');
-
-        if (corollaParts.length > 0) {
-            text += 'Corolla: ' + corollaParts.join(', ') + '. ';
-        }
-
-        // Distinguishing characteristics
-        if (data.differ) {
-            text += 'Distinguishing characteristics: ' + data.differ + '. ';
-        }
-
-        // Additional information
-        const additionalInfo = [];
-        if (data.files) additionalInfo.push('Files attached: ' + formatWord(data.files));
-        if (data.awards && data.awards.toLowerCase() !== 'n/a') additionalInfo.push('Awards: ' + data.awards);
-        if (data.sources && data.sources.toLowerCase() !== 'n/a') additionalInfo.push('Available from: ' + data.sources);
-        if (data.cultivar) additionalInfo.push('Published: ' + data.cultivar);
-        if (data.email) additionalInfo.push('Contact: ' + data.email);
-
-        if (additionalInfo.length > 0) {
-            text += additionalInfo.join('. ') + '. ';
-        }
-
+        text += "Corolla ";
+        if (data.corolla) text += data.corolla + ", ";
+        if (data.corollaLength) text += data.corollaLength + ", ";
+        if (data.corollaDiameter) text += data.corollaDiameter + " wide, ";
+        if (data.corollaColor) text += data.corollaColor + ", ";
+        
+        // distinguishing characteristics
+        if (data.differ) text += data.differ;
+        
+        // Ensure it ends with a period
+        if (!text.endsWith('.')) text += ".";
+        
         return text.trim();
     }
 
